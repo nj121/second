@@ -1,4 +1,4 @@
 # second
 student task
-student name：nj
-teacher name:zhouf
+student name:nj
+teacher name:zf

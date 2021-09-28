@@ -2,13 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.second">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Second">
+        <activity
+            android:name=".opentest"
+            android:exported="true" />
+        <activity
+            android:name=".huilv"
+            android:exported="true" />
         <activity
             android:name=".count"
             android:exported="true">

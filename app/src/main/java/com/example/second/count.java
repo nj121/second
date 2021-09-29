@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class count extends AppCompatActivity {
@@ -30,8 +32,7 @@ public class count extends AppCompatActivity {
             s = 0;
         }
 
-        TextView count = findViewById(R.id.count);
-        count.setText(""+s);
+        show();
     }
 
     public void click1(View btn){
@@ -46,6 +47,27 @@ public class count extends AppCompatActivity {
             s1 = 0;
         }
 
+        show();
+    }
+
+    //旋转屏幕后保存当前页面数据
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("count",s);
+        outState.putInt("count1",s1);
+    }
+
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        s = savedInstanceState.getInt("count",0);
+        s1 = savedInstanceState.getInt("count1",0);
+        show();
+    }
+    public void show(){
+        TextView count = findViewById(R.id.count);
+        count.setText(""+s);
         TextView count1 = findViewById(R.id.count1);
         count1.setText(""+s1);
     }

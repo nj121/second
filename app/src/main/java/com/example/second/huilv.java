@@ -18,18 +18,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 public class huilv extends AppCompatActivity implements Runnable {
 
     private static final String TAG = "kkkkk";
+    java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
     float d = 0.15f,e = (float)0.13,w =(float) 182.43;
     Handler handler;
     TextView infrom;
@@ -52,9 +55,14 @@ public class huilv extends AppCompatActivity implements Runnable {
             public void handleMessage(@NonNull Message msg) {
                 Log.i(TAG, "handleMessage: 接收");
                 if(msg.what == 1){
-                    String str = (String)msg.obj;
+                    /*String str = (String)msg.obj;
                     Log.i(TAG, "handleMessage: 消息是 " + str);
-                    infrom.setText(str);
+                    infrom.setText(str);*/
+                    d = Float.parseFloat(df.format(100/Float.parseFloat((String)msg.obj)));
+                }else if(msg.what == 2){
+                    e = Float.parseFloat(df.format(100/Float.parseFloat((String)msg.obj)));
+                }else if(msg.what == 3){
+                    w = Float.parseFloat(df.format(100/Float.parseFloat((String)msg.obj)));
                 }
                 super.handleMessage(msg);
             }
@@ -156,7 +164,7 @@ public class huilv extends AppCompatActivity implements Runnable {
             interruptedException.printStackTrace();
         }
 
-        URL url = null;
+        /*URL url = null;
         String html = null;
         try {
             url = new URL("http://hl.anseo.cn/");
@@ -168,12 +176,66 @@ public class huilv extends AppCompatActivity implements Runnable {
             malformedURLException.printStackTrace();
         } catch (IOException ioException) {
             ioException.printStackTrace();
+        }*/
+
+        Document doc = null;
+        Message msg;
+        try {
+            doc = Jsoup.connect("https://usd-cny.com/").get();
+            Log.i(TAG, "title: "+doc.title());
+            Element firsttable = doc.getElementsByTag("table").first();
+            //Log.i(TAG, "run: table="+firsttable);
+            Elements trs = firsttable.getElementsByTag("tr");
+            trs.remove(0);
+            for(Element tr : trs){
+                //Log.i(TAG, "run: tr="+tr);
+                Elements tds = tr.getElementsByTag("td");
+                Element td1 = tds.get(0);
+                Element td2 = tds.get(4);
+                //Log.i(TAG, "run: tds.size="+tds.size());
+                if("美元".equals(td1.text())){
+                    sendMessage(td2.text(),1);
+                }else if("欧元".equals(td1.text())){
+                    sendMessage(td2.text(),2);
+                }else if("韩币".equals(td1.text())){
+                    sendMessage(td2.text(),3);
+                }
+            }
+
+            /*for(Element item : firsttable.getElementsByClass("bz")){
+                Log.i(TAG, "run: item="+item.text());
+            }*/
+
+            /*Elements tds = firsttable.getElementsByTag("td");
+                Element dr = tds.get(1);
+                Element er = tds.get(6);
+                Element wr = tds.get(26);
+                Log.i(TAG, "run: dr="+dr.text()+"\t er="+er.text()+"\t wr="+wr.text());*/
+
+            /*Elements ths = firsttable.getElementsByTag("th");
+            for(Element th : ths){
+                Log.i(TAG, "run: th="+th);
+                Log.i(TAG, "run: th.text="+th.text());
+                Log.i(TAG, "run: th.html="+th.html());
+            }
+            Element th2 = ths.get(1);
+            Log.i(TAG, "run: th2 = "+th2.text());*/
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
 
-        Message msg = handler.obtainMessage(1);
-        msg.obj = html;
+        /*Message msg = handler.obtainMessage(1);
+        msg.obj = "doc";
         handler.sendMessage(msg);
-        Log.i(TAG, "run: ok");
+        Log.i(TAG, "run: ok");*/
+    }
+
+    public void sendMessage(String td,int mid){
+        Message msg;
+        msg = handler.obtainMessage(mid);
+        msg.obj = td;
+        handler.sendMessage(msg);
+        Log.i(TAG, "run: ok"+mid);
     }
 
     private String input2StreamString(InputStream ins) throws IOException{

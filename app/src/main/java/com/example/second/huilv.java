@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class huilv extends AppCompatActivity implements Runnable {
@@ -68,10 +70,20 @@ public class huilv extends AppCompatActivity implements Runnable {
             }
         };
 
-        Thread thread = new Thread(this);
-        thread.start();
-    }
+        String date = gettime();
+        String date2 = "";
+        SharedPreferences sptime = getSharedPreferences("last", Activity.MODE_PRIVATE);
+        date2 =sptime.getString("date","");
+        Log.i(TAG, "onCreate: date2="+date2);
+        if(!date2.equals(date)){
+            SharedPreferences.Editor editor = sptime.edit();
+            editor.putString("date",date);
+            editor.apply();
 
+            Thread thread = new Thread(this);
+            thread.start();
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu,menu);
@@ -202,6 +214,7 @@ public class huilv extends AppCompatActivity implements Runnable {
                 }
             }
 
+
             /*for(Element item : firsttable.getElementsByClass("bz")){
                 Log.i(TAG, "run: item="+item.text());
             }*/
@@ -250,5 +263,11 @@ public class huilv extends AppCompatActivity implements Runnable {
         }
         return out.toString();
     }
+
+    public String gettime(){
+        SimpleDateFormat s_format = new SimpleDateFormat("yyyyMMdd");
+        return s_format.format(new Date());
+    }
+
 }
 

@@ -65,6 +65,7 @@ public class count extends AppCompatActivity {
         s1 = savedInstanceState.getInt("count1",0);
         show();
     }
+
     public void show(){
         TextView count = findViewById(R.id.count);
         count.setText(""+s);

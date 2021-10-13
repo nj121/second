@@ -34,10 +34,15 @@ import java.util.Date;
 public class huilv extends AppCompatActivity implements Runnable {
 
     private static final String TAG = "kkkkk";
-    java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
-    float d = 0.15f,e = (float)0.13,w =(float) 182.43;
+    java.text.DecimalFormat df = new java.text.DecimalFormat("#.####");
+    float d = 0.1f,e = (float)0.1,w =(float) 1.0;
     Handler handler;
     TextView infrom;
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,7 @@ public class huilv extends AppCompatActivity implements Runnable {
             }
         };
 
+
         String date = gettime();
         String date2 = "";
         SharedPreferences sptime = getSharedPreferences("last", Activity.MODE_PRIVATE);
@@ -83,6 +89,7 @@ public class huilv extends AppCompatActivity implements Runnable {
             Thread thread = new Thread(this);
             thread.start();
         }
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

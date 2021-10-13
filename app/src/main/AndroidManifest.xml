@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Second"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".huilvjisuan"
+            android:exported="true" />
+        <activity
             android:name=".RateListActivity2"
             android:exported="true" />
         <activity

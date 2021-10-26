@@ -16,7 +16,6 @@ import java.util.List;
 public class MyListActivity extends ListActivity {
 
     java.text.DecimalFormat df = new java.text.DecimalFormat("#.####");
-    float d = 0.1f,e = (float)0.1,w =(float) 1.0;
     Handler handler;
     private static final  String TAG = "TTT";
 

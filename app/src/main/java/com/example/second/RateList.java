@@ -24,11 +24,11 @@ public class RateList implements Runnable{
 
     @Override
     public void run() {
-        /*try {
+        try {
             Thread.sleep(3000);
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
-        }*/
+        }
         Log.i(TAG, "线程启动: ");
         Document doc = null;
         Message msg;
